@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Ajax Demo</title>
+<script >
+	var xmlhttpobject=false;
+
+	if(window.XMLHttpRequest)
+		{
+		xmlhttpobject=new XMLHttpRequest();
+		}
+	else if(window.ActiveXObject)
+		{
+		xmlhttpobject=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+	function getData(divId,divId2)
+	{
+		if(xmlhttpobject)
+		{
+			
+			var obj=document.getElementById('uid');			
+			var code=obj.value;
+			xmlhttpobject.open("GET","http://jsonplaceholder.typicode.com/users/"+code,true);
+
+			xmlhttpobject.onreadystatechange=function()
+			{
+				
+				if(xmlhttpobject.readyState == 4 && xmlhttpobject.status == 200)
+					var data =xmlhttpobject.responseText;
+
+				    var jsonobj = JSON.parse(data);
+				    
+				    userName=jsonobj.name;
+				    email=jsonobj.email;
+
+				    var obj2=document.getElementById(divId);
+				    obj2.value=userName;
+				    var obj3=document.getElementById(divId2);
+				    obj3.value=email;
+			
+			}
+		}
+		xmlhttpobject.send(null);
+	}
+</script>
+
+</head>
+<body>
+
+
+<h1 >Ajax Text Example</h1>
+
+User Id <input type="text" name="userId"  id="uid" onblur="getData('targetDiv1','targetDiv2')">
+
+userName <input type="text" name="userName" id='targetDiv1'>
+Email <input type="text" name="email" id='targetDiv2'>
+</body>
+</html>
